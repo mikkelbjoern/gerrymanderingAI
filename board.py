@@ -31,7 +31,6 @@ class Board(object):
 			x=0
 			y+=1
 
-
 	def switch(self,x,y):
 		neighbors = set()
 
@@ -49,15 +48,23 @@ class Board(object):
 		if len(neighbors)==1:
 			self.zone_map[y][x]=neighbors.pop()
 
-
 	def get_set_zone(self, x, y):
 		try:
 			returning = set([self.zone_map[y][x]])
 		except IndexError:
 			returning = set()
 		return returning
-	
-	def cost(self):
+
+	def zone_size(self,zoneNr):
+		count = 0
+		for y in range(self.height):
+			for x in range(self.width):
+				if int(self.zone_map[y][x]) == zoneNr:
+					count += 1
+
+		return count
+
+	def cost_win(self):
 		cost=0
 		zone_vote=[0 for i in range(self.zones)]
 		zone_count=[0 for i in range(self.zones)]
@@ -72,7 +79,7 @@ class Board(object):
 			win_percentage+=zone_vote[i]/zone_count[i]
 		win_percentage=win_percentage/self.zones
 		return(win_percentage)
-		
+
 	def vote_print(self):
 		print('\n'.join([''.join(['{:4}'.format(item) for item in row])
       for row in self.vote_map]))
