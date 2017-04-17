@@ -56,7 +56,23 @@ class Board(object):
 		except IndexError:
 			returning = set()
 		return returning
-
+	
+	def cost(self):
+		cost=0
+		zone_vote=[0 for i in range(self.zones)]
+		zone_count=[0 for i in range(self.zones)]
+		"""Taeller stemmer i hver zone, samt antal af stemmere i hver zone"""
+		for y in range(len(self.vote_map)):
+			for x in range(len(self.vote_map[y])):
+				zone_count[self.zone_map[y][x]]+=1
+				zone_vote[self.zone_map[y][x]]+=float(self.vote_map[y][x])
+		"""Vurderer om der er vundet eller tabt i hver zone"""
+		win_percentage=0
+		for i in range(len(zone_vote)):
+			win_percentage+=zone_vote[i]/zone_count[i]
+		win_percentage=win_percentage/self.zones
+		return(win_percentage)
+		
 	def vote_print(self):
 		print('\n'.join([''.join(['{:4}'.format(item) for item in row])
       for row in self.vote_map]))
